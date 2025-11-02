@@ -6,7 +6,7 @@ use Perimeterx\PerimeterxCookieValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 
-class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
+class PerimeterxCookieV3ValidatorTest extends PHPUnit\Framework\TestCase
 {
 
     // randomly generated fake values

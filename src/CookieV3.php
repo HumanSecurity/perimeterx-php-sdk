@@ -19,7 +19,7 @@ class CookieV3 extends PerimeterxCookie
 
         $payloadParts = explode(":", $pxCtx->getPxCookie());
         if (count($payloadParts) < $cookieValidPartsNumber) {
-            return null;
+            throw new PerimeterxException("Invalid cookie format: expected at least {$cookieValidPartsNumber} parts");
         }
         list($hash, $cookie) = explode(":", $pxCtx->getPxCookie(), 2);
         $this->pxPayload = $cookie;

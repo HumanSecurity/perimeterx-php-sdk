@@ -2,6 +2,7 @@
 
 use Perimeterx\PerimeterxUtils;
 use PerimeterxTests\TestUtils;
+use PHPUnit\Framework\TestCase;
 
 class PerimeterxUtilsDouble extends PerimeterxUtils {
     public static function setInputStreamName($inputStreamName) {
@@ -9,14 +10,14 @@ class PerimeterxUtilsDouble extends PerimeterxUtils {
     }
 }
 
-class PerimeterxUtilsTest extends PHPUnit_Framework_TestCase {
+class PerimeterxUtilsTest extends TestCase {
     const TEMP_STREAM_NAME = "file://" . __DIR__ . "/tmp.txt";
 
-    public function setUp() {
+    protected function setUp(): void {
         PerimeterxUtilsDouble::setInputStreamName(self::TEMP_STREAM_NAME);
     }
 
-    public function tearDown() {
+    protected function tearDown(): void {
         if (file_exists(self::TEMP_STREAM_NAME)) {
             unlink(self::TEMP_STREAM_NAME);
         }

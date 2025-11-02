@@ -20,7 +20,7 @@ class TokenV3 extends PerimeterxToken
 
         $payloadParts = explode(":", $payload);
         if (count($payloadParts) < $cookieValidPartsNumber) {
-            return null;
+            throw new PerimeterxException("Invalid token format: expected at least {$cookieValidPartsNumber} parts");
         }
         list($hash, $token) = explode(":", $payload, 2);
 

@@ -57,7 +57,7 @@
 
 ## <a name="dependencies"></a> Dependencies
 
--   [v5.6 <= PHP <= v7.0.15](http://php.net/downloads.php)
+-   [PHP >= 8.1](http://php.net/downloads.php)
 
 ## <a name="installation"></a> Installation
 
