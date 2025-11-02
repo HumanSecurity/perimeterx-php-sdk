@@ -5,7 +5,7 @@ use Perimeterx\CredentialsIntelligence\PerimeterxFieldExtractor;
 use Perimeterx\CredentialsIntelligence\PerimeterxFieldExtractorManager;
 use Perimeterx\CredentialsIntelligence\Protocol\V1CredentialsIntelligenceProtocol;
 
-class PerimeterxFieldExtractorManagerTest extends PHPUnit_Framework_TestCase
+class PerimeterxFieldExtractorManagerTest extends PHPUnit\Framework\TestCase
 {
     const LOGIN_REQUEST_URI = "/login";
     const LOGIN_REQUEST_METHOD = "POST";
@@ -32,7 +32,7 @@ class PerimeterxFieldExtractorManagerTest extends PHPUnit_Framework_TestCase
      */
     private $fieldExtractorManager;
 
-    public function setUp() {
+    public function setUp(): void {
         $mapKey = PerimeterxFieldExtractorManager::generateMapKey(self::LOGIN_REQUEST_URI, self::LOGIN_REQUEST_METHOD);
         $mockExtractor = $this->createMock(PerimeterxFieldExtractor::class);
         $mockExtractor

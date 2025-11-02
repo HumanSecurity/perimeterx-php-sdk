@@ -3,13 +3,13 @@
 use PHPUnit\Framework\TestCase;
 use Perimeterx\Perimeterx;
 
-class PerimeterxConfigurationValidatorTest extends PHPUnit_Framework_TestCase
+class PerimeterxConfigurationValidatorTest extends PHPUnit\Framework\TestCase
 {
 
     protected $params;
     protected $px;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->params = [
             'app_id' => 'PX_APP_ID',
@@ -20,7 +20,7 @@ class PerimeterxConfigurationValidatorTest extends PHPUnit_Framework_TestCase
         ];
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $reflection = new ReflectionClass($this->px);
         $instance = $reflection->getProperty('instance');

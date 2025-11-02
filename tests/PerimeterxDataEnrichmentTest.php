@@ -8,7 +8,7 @@ use Perimeterx\PerimeterxDataEnrichment;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 
-class PerimeterxDataEnrichmentTest extends PHPUnit_Framework_TestCase {
+class PerimeterxDataEnrichmentTest extends PHPUnit\Framework\TestCase {
     const COOKIE_KEY = '549Z5UsasvfmVS6kAR3r4ydPnQdnnW4Gcwk35hj5tatZ5B2dqjrQvMMyLAJN5de3';
 
     public function testNoPxdeCookie() {
@@ -114,7 +114,7 @@ class PerimeterxDataEnrichmentTest extends PHPUnit_Framework_TestCase {
     {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getDataEnrichmentCookie'])
+            ->onlyMethods(['getDataEnrichmentCookie'])
             ->getMock();
         $pxCtx->expects($this->any())
             ->method('getDataEnrichmentCookie')

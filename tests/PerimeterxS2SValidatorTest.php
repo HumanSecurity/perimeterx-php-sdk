@@ -6,7 +6,7 @@ use Perimeterx\PerimeterxS2SValidator;
 use Perimeterx\PerimeterxHttpClient;
 use Psr\Log\AbstractLogger;
 
-class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
+class PerimeterxS2SValidatorTest extends PHPUnit\Framework\TestCase
 {
     // randomly generated fake values
     const COOKIE_KEY = '549Z5UsasvfmVS6kAR3r4ydPnQdnnW4Gcwk35hj5tatZ5B2dqjrQvMMyLAJN5de3';
@@ -30,9 +30,14 @@ class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
     public function testAttachPxOrigCookie() {
         $pxCookie = 'this is a fake cookie';
 
+        $actualRequestBody = null;
         $http_client = $this->createMock(PerimeterxHttpClient::class);
-        $http_client->expects($spy = $this->any())
-            ->method('send');
+        $http_client->expects($this->once())
+            ->method('send')
+            ->willReturnCallback(function($url, $method, $requestBody) use (&$actualRequestBody) {
+                $actualRequestBody = $requestBody;
+                return json_encode(['score' => 0, 'action' => 'c', 'uuid' => 'test']);
+            });
 
         $pxCtx = $this->getPxContext($pxCookie);
         $pxConfig = $this->getPxConfig($this->getMockLogger('info', 'attaching px_orig_cookie to request'), $http_client);
@@ -40,10 +45,7 @@ class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
         $validator = new PerimeterxS2SValidator($pxCtx, $pxConfig);
         $validator->verify();
 
-        $invocations = $spy->getInvocations();
-
-        $last = end($invocations);
-        $this->assertEquals($pxCookie, $last->parameters[2]["additional"]["px_cookie_orig"]);
+        $this->assertEquals($pxCookie, $actualRequestBody["additional"]["px_cookie_orig"]);
     }
 
     /**
@@ -85,7 +87,7 @@ class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
 
         $this->assertEquals("s2s_error", $pxCtx->getPassReason());
         $this->assertEquals("unknown_error", $pxCtx->getS2SErrorReason());
-        $this->assertContains($exception_message, $pxCtx->getS2SErrorMessage());
+        $this->assertStringContainsString($exception_message, $pxCtx->getS2SErrorMessage());
     }
 
     /**
@@ -107,7 +109,7 @@ class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals("s2s_error", $pxCtx->getPassReason());
         $this->assertEquals($s2sErrorReason, $pxCtx->getS2SErrorReason());
         if (!empty($s2sErrorMessage)) {
-            $this->assertContains($s2sErrorMessage, $pxCtx->getS2SErrorMessage());
+            $this->assertStringContainsString($s2sErrorMessage, $pxCtx->getS2SErrorMessage());
         }
         $this->assertEquals($httpStatus, $pxCtx->getS2SErrorHttpStatus());
         $this->assertEquals($httpMessage, $pxCtx->getS2SErrorHttpMessage());
@@ -184,12 +186,12 @@ class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
 {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->setMethods([
+            ->onlyMethods([
               'getPxCookie',
               'getUserAgent',
               'getIp',
               'getUri',
-              'getUrl',
+              'getFullUrl',
               'getS2SCallReason',
               'getHttpMethod',
               'getHttpVersion',
@@ -210,7 +212,7 @@ class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
             ->method('getUri')
             ->willReturn($uri);
         $pxCtx->expects($this->any())
-            ->method('getUrl')
+            ->method('getFullUrl')
             ->willReturn($url);
         $pxCtx->expects($this->any())
             ->method('getS2SCallReason')

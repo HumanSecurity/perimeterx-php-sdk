@@ -9,14 +9,14 @@ class PerimeterxUtilsDouble extends PerimeterxUtils {
     }
 }
 
-class PerimeterxUtilsTest extends PHPUnit_Framework_TestCase {
+class PerimeterxUtilsTest extends PHPUnit\Framework\TestCase {
     const TEMP_STREAM_NAME = "file://" . __DIR__ . "/tmp.txt";
 
-    public function setUp() {
+    public function setUp(): void {
         PerimeterxUtilsDouble::setInputStreamName(self::TEMP_STREAM_NAME);
     }
 
-    public function tearDown() {
+    public function tearDown(): void {
         if (file_exists(self::TEMP_STREAM_NAME)) {
             unlink(self::TEMP_STREAM_NAME);
         }

@@ -6,7 +6,7 @@ use Perimeterx\PerimeterxCookieValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 
-class PerimeterxOriginalTokenValidatorTest extends PHPUnit_Framework_TestCase
+class PerimeterxOriginalTokenValidatorTest extends PHPUnit\Framework\TestCase
 {
     // randomly generated fake values
     const COOKIE_KEY = '549Z5UsasvfmVS6kAR3r4ydPnQdnnW4Gcwk35hj5tatZ5B2dqjrQvMMyLAJN5de3';
@@ -221,7 +221,7 @@ class PerimeterxOriginalTokenValidatorTest extends PHPUnit_Framework_TestCase
     {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getPxCookie', 'getOriginalToken', 'getCookieOrigin'])
+            ->onlyMethods(['getPxCookie', 'getOriginalToken', 'getCookieOrigin'])
             ->getMock();
         $pxCtx->expects($this->any())
             ->method('getPxCookie')

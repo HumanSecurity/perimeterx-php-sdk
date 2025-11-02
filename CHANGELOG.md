@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0] - 2025-11-02
+
+### Changed
+
+- **BREAKING CHANGE**: Updated minimum PHP version from 5.5 to 7.2.5
+- **BREAKING CHANGE**: Updated Guzzle HTTP client from ~6.0 to ^7.0
+- Updated dev dependencies:
+  - PHPUnit from 5.6.* to ^8.5
+  - Mockery from 0.9.* to ^1.3
+  - PHPLint from ^1.1 to ^2.0
+
+### Notes
+
+- This is a major version update due to the breaking changes in minimum PHP version requirements
+- Guzzle 7.x requires PHP 7.2.5 or higher
+- Existing projects using this SDK must upgrade to at least PHP 7.2.5 to use this version
+
 ## [3.10.2] - 2024-09-11
 
 ### Fixed

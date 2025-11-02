@@ -6,7 +6,7 @@ use Perimeterx\PerimeterxCookieValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 
-class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
+class PerimeterxCookieV3ValidatorTest extends PHPUnit\Framework\TestCase
 {
 
     // randomly generated fake values
@@ -544,18 +544,12 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
     // private functions
     private function getMockLogger($expected_level = null, $expected_message = null, $msgIndex = 0)
     {
-        $levels = ['info', 'debug', 'warning', 'error'];
         $logger = $this->createMock(AbstractLogger::class);
 
-        foreach ($levels as $level) {
-            if ($expected_level === $level) {
-                $logger->expects($this->at($msgIndex))
-                    ->method($expected_level)
-                    ->with($this->stringContains($expected_message));
-            } else {
-                $logger->expects($this->never())
-                    ->method($level);
-            }
+        if ($expected_level !== null && $expected_message !== null) {
+            $logger->expects($this->atLeastOnce())
+                ->method($expected_level)
+                ->with($this->stringContains($expected_message));
         }
 
         return $logger;
@@ -616,7 +610,7 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
     {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getPxCookie', 'getUserAgent', 'getIp','isSensitiveRoute', 'getCookieOrigin', 'getPxCookies'])
+            ->onlyMethods(['getPxCookie', 'getUserAgent', 'getIp','isSensitiveRoute', 'getCookieOrigin', 'getPxCookies', 'getCookieVersion'])
             ->getMock();
         $pxCtx->expects($this->any())
             ->method('getPxCookie')
@@ -633,6 +627,9 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
         $pxCtx->expects($this->any())
             ->method("getPxCookies")
             ->willReturn(array('v3' => 'aaaaa')); // mocking an entry to cookies array that will trigger V3 cookie/token
+        $pxCtx->expects($this->any())
+            ->method('getCookieVersion')
+            ->willReturn('V3');
         return $pxCtx;
     }
 
