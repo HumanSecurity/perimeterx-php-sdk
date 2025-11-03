@@ -599,12 +599,18 @@ class PerimeterxCookieValidatorTest extends PHPUnit\Framework\TestCase
 
     private function getMockLogger($expected_level = null, $expected_message = null, $msgIndex = 0)
     {
+        $levels = ['debug', 'info', 'warning', 'error'];
         $logger = $this->createMock(AbstractLogger::class);
 
-        if ($expected_level !== null && $expected_message !== null) {
-            $logger->expects($this->atLeastOnce())
-                ->method($expected_level)
-                ->with($this->stringContains($expected_message));
+        foreach ($levels as $level) {
+            if ($expected_level === $level) {
+                $logger->expects($this->at($msgIndex))
+                    ->method($expected_level)
+                    ->with($this->stringContains($expected_message));
+            } else {
+                $logger->expects($this->never())
+                    ->method($level);
+            }
         }
 
         return $logger;

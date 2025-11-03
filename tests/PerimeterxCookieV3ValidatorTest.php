@@ -544,12 +544,18 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit\Framework\TestCase
     // private functions
     private function getMockLogger($expected_level = null, $expected_message = null, $msgIndex = 0)
     {
+        $levels = ['info', 'debug', 'warning', 'error'];
         $logger = $this->createMock(AbstractLogger::class);
 
-        if ($expected_level !== null && $expected_message !== null) {
-            $logger->expects($this->atLeastOnce())
-                ->method($expected_level)
-                ->with($this->stringContains($expected_message));
+        foreach ($levels as $level) {
+            if ($expected_level === $level) {
+                $logger->expects($this->at($msgIndex))
+                    ->method($expected_level)
+                    ->with($this->stringContains($expected_message));
+            } else {
+                $logger->expects($this->never())
+                    ->method($level);
+            }
         }
 
         return $logger;
@@ -610,7 +616,7 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit\Framework\TestCase
     {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getPxCookie', 'getUserAgent', 'getIp','isSensitiveRoute', 'getCookieOrigin', 'getPxCookies', 'getCookieVersion'])
+            ->setMethods(['getPxCookie', 'getUserAgent', 'getIp','isSensitiveRoute', 'getCookieOrigin', 'getPxCookies'])
             ->getMock();
         $pxCtx->expects($this->any())
             ->method('getPxCookie')
@@ -627,9 +633,6 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit\Framework\TestCase
         $pxCtx->expects($this->any())
             ->method("getPxCookies")
             ->willReturn(array('v3' => 'aaaaa')); // mocking an entry to cookies array that will trigger V3 cookie/token
-        $pxCtx->expects($this->any())
-            ->method('getCookieVersion')
-            ->willReturn('V3');
         return $pxCtx;
     }
 
