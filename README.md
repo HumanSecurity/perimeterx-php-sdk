@@ -6,7 +6,7 @@
 
 # [PerimeterX](http://www.perimeterx.com) PHP SDK
 
-> Latest stable version: [v3.10.2](https://packagist.org/packages/perimeterx/php-sdk#3.10.1)
+> Latest stable version: [v4.0.0](https://packagist.org/packages/perimeterx/php-sdk#4.0.0)
 
 ## Table of Contents
 
@@ -57,7 +57,7 @@
 
 ## <a name="dependencies"></a> Dependencies
 
--   [v5.6 <= PHP <= v7.0.15](http://php.net/downloads.php)
+-   [PHP >= 7.2.5](http://php.net/downloads.php)
 
 ## <a name="installation"></a> Installation
 
