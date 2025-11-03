@@ -221,7 +221,7 @@ class PerimeterxOriginalTokenValidatorTest extends PHPUnit\Framework\TestCase
     {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getPxCookie', 'getOriginalToken', 'getCookieOrigin'])
+            ->setMethods(['getPxCookie', 'getOriginalToken', 'getCookieOrigin'])
             ->getMock();
         $pxCtx->expects($this->any())
             ->method('getPxCookie')

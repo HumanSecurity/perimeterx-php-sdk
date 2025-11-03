@@ -644,7 +644,7 @@ class PerimeterxCookieValidatorTest extends PHPUnit\Framework\TestCase
     {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getPxCookie', 'getUserAgent', 'getIp','isSensitiveRoute', 'getCookieOrigin'])
+            ->setMethods(['getPxCookie', 'getUserAgent', 'getIp','isSensitiveRoute', 'getCookieOrigin'])
             ->getMock();
         $pxCtx->expects($this->any())
             ->method('getPxCookie')

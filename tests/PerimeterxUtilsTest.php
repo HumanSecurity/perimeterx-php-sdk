@@ -12,11 +12,11 @@ class PerimeterxUtilsDouble extends PerimeterxUtils {
 class PerimeterxUtilsTest extends PHPUnit\Framework\TestCase {
     const TEMP_STREAM_NAME = "file://" . __DIR__ . "/tmp.txt";
 
-    public function setUp(): void {
+    public function setUp() {
         PerimeterxUtilsDouble::setInputStreamName(self::TEMP_STREAM_NAME);
     }
 
-    public function tearDown(): void {
+    public function tearDown() {
         if (file_exists(self::TEMP_STREAM_NAME)) {
             unlink(self::TEMP_STREAM_NAME);
         }

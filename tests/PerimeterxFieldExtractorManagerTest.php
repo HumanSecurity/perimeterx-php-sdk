@@ -32,7 +32,7 @@ class PerimeterxFieldExtractorManagerTest extends PHPUnit\Framework\TestCase
      */
     private $fieldExtractorManager;
 
-    public function setUp(): void {
+    public function setUp() {
         $mapKey = PerimeterxFieldExtractorManager::generateMapKey(self::LOGIN_REQUEST_URI, self::LOGIN_REQUEST_METHOD);
         $mockExtractor = $this->createMock(PerimeterxFieldExtractor::class);
         $mockExtractor

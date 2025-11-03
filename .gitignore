@@ -7,3 +7,4 @@ dev/
 build/
 .vscode
 tests/coverage
+.phpunit.result.cache

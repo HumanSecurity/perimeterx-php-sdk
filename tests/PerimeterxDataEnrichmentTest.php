@@ -114,7 +114,7 @@ class PerimeterxDataEnrichmentTest extends PHPUnit\Framework\TestCase {
     {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->onlyMethods(['getDataEnrichmentCookie'])
+            ->setMethods(['getDataEnrichmentCookie'])
             ->getMock();
         $pxCtx->expects($this->any())
             ->method('getDataEnrichmentCookie')
