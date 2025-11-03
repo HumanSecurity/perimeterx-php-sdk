@@ -9,7 +9,7 @@ class PerimeterxConfigurationValidatorTest extends PHPUnit\Framework\TestCase
     protected $params;
     protected $px;
 
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->params = [
             'app_id' => 'PX_APP_ID',
@@ -20,7 +20,7 @@ class PerimeterxConfigurationValidatorTest extends PHPUnit\Framework\TestCase
         ];
     }
 
-    protected function tearDown(): void
+    protected function tearDown()
     {
         $reflection = new ReflectionClass($this->px);
         $instance = $reflection->getProperty('instance');
