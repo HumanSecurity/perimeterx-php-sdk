@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 use Perimeterx\Perimeterx;
 
-class PerimeterxConfigurationValidatorTest extends PHPUnit_Framework_TestCase
+class PerimeterxConfigurationValidatorTest extends PHPUnit\Framework\TestCase
 {
 
     protected $params;

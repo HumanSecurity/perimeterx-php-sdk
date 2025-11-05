@@ -78,7 +78,7 @@ class PerimeterxHttpClient
             function(&$value, $key) // assume key is ok, no need to fix it
             {
                 if (is_string($value)) {
-                    $value = utf8_encode($value);
+                    $value = mb_convert_encoding($value, 'UTF-8', 'ISO-8859-1');
                 } elseif ($value instanceof \stdClass) {
                     $value = self::fixJsonBody(get_object_vars($value));
                 }

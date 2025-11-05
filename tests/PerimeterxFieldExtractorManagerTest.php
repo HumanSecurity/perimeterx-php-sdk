@@ -5,7 +5,7 @@ use Perimeterx\CredentialsIntelligence\PerimeterxFieldExtractor;
 use Perimeterx\CredentialsIntelligence\PerimeterxFieldExtractorManager;
 use Perimeterx\CredentialsIntelligence\Protocol\V1CredentialsIntelligenceProtocol;
 
-class PerimeterxFieldExtractorManagerTest extends PHPUnit_Framework_TestCase
+class PerimeterxFieldExtractorManagerTest extends PHPUnit\Framework\TestCase
 {
     const LOGIN_REQUEST_URI = "/login";
     const LOGIN_REQUEST_METHOD = "POST";

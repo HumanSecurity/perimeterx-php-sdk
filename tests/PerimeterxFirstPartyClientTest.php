@@ -7,7 +7,7 @@ use Perimeterx\PerimeterxLogger;
 use PerimeterxTests\MockHttpClient;
 use PerimeterxTests\TestUtils;
 
-class PerimeterxFirstPartyClientTest extends PHPUnit_Framework_TestCase {
+class PerimeterxFirstPartyClientTest extends PHPUnit\Framework\TestCase {
     private function getTestPxConfig() {
         $pxConfig = [
             'app_id' => 'PX_APP_ID',

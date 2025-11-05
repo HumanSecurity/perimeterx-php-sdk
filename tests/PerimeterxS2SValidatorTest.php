@@ -6,7 +6,7 @@ use Perimeterx\PerimeterxS2SValidator;
 use Perimeterx\PerimeterxHttpClient;
 use Psr\Log\AbstractLogger;
 
-class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
+class PerimeterxS2SValidatorTest extends PHPUnit\Framework\TestCase
 {
     // randomly generated fake values
     const COOKIE_KEY = '549Z5UsasvfmVS6kAR3r4ydPnQdnnW4Gcwk35hj5tatZ5B2dqjrQvMMyLAJN5de3';
@@ -43,7 +43,8 @@ class PerimeterxS2SValidatorTest extends PHPUnit_Framework_TestCase
         $invocations = $spy->getInvocations();
 
         $last = end($invocations);
-        $this->assertEquals($pxCookie, $last->parameters[2]["additional"]["px_cookie_orig"]);
+        $params = $last->getParameters();
+        $this->assertEquals($pxCookie, $params[2]["additional"]["px_cookie_orig"]);
     }
 
     /**

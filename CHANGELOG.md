@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.0.0] - 2025-11-03
+
+### Changed
+
+- Updated minimum PHP version from 5.5 to 7.2.5
+- Updated Guzzle HTTP client from 6.0 to 7.0
+
+### Fixed
+
+- Removed `<script>` tags from test fixture that caused "headers already sent" errors in unit tests
+
 ## [3.10.2] - 2024-09-11
 
 ### Fixed
