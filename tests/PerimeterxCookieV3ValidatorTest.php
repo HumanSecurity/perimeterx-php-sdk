@@ -6,7 +6,7 @@ use Perimeterx\PerimeterxCookieValidator;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\AbstractLogger;
 
-class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
+class PerimeterxCookieV3ValidatorTest extends PHPUnit\Framework\TestCase
 {
 
     // randomly generated fake values
@@ -524,9 +524,9 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
     }
 
     public function testEncryptedTokenDecryption() {
-        // far future encrypted cookie
+        // far future encrypted cookie (expires 2030)
         $cookie_origin="header";
-        $pxCookie = "8d4a0f41e65af5088266f1eb0db7bd4266309d3c471c097aea538e17c1ebe82d:mmjSIpdOpbZYsDjXe0vAieBbrG7k8JVJO2+9itMXUoZfugSlvRIqK4BUKPDAd2gftZtbwU0eA5LZXHf8VURI/w==:1000:KFCP3EU4qtGhRab+OgIYeg0SXhXWWfmSvmTK6+4J5vwN73/IVx/BkcRzC1inFxJ2jCHr+KqcQxEpcqyO1E91l2Wk38ddADYzuog3KhbsV9j2wXldnX0zWkc7dgnRHc8xJuck4NfrZivdfQNA0AC4k+z0sasqwRWQ5Eq1mjnIwf8=";
+        $pxCookie = "03f5ed4e3a66cfbebfb6ef038863f26640ef1c2ff6a511bfa1f4ee58feadd95c:SkpI+K6uJQw=:1000:FxDFLxnIdE+u+4bgEZA9/1jaI9AkY5lLpPvqAhLpVyZm1PfL8BKCYmDHK/Q0OwyBG4D3Cm2GubexSrdfb6mDuw4ucjqfgxtfbgF2LLn+DkgNLYvErnkALH22tGU9UGje";
         $userAgent = self::USER_AGENT;
         $pxCtx = $this->getPxContext($pxCookie, $userAgent, false, $cookie_origin);
         $pxConfig = [
@@ -616,7 +616,7 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
     {
         $pxCtx = $this->getMockBuilder(PerimeterxContext::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getPxCookie', 'getUserAgent', 'getIp','isSensitiveRoute', 'getCookieOrigin', 'getPxCookies'])
+            ->setMethods(['getPxCookie', 'getUserAgent', 'getIp','isSensitiveRoute', 'getCookieOrigin', 'getPxCookies', 'getCookieVersion', 'getUri', 'getLoginCredentials', 'getPxhdCookie', 'getOriginalToken'])
             ->getMock();
         $pxCtx->expects($this->any())
             ->method('getPxCookie')
@@ -633,6 +633,21 @@ class PerimeterxCookieV3ValidatorTest extends PHPUnit_Framework_TestCase
         $pxCtx->expects($this->any())
             ->method("getPxCookies")
             ->willReturn(array('v3' => 'aaaaa')); // mocking an entry to cookies array that will trigger V3 cookie/token
+        $pxCtx->expects($this->any())
+            ->method('getCookieVersion')
+            ->willReturn('v3');
+        $pxCtx->expects($this->any())
+            ->method('getUri')
+            ->willReturn('/');
+        $pxCtx->expects($this->any())
+            ->method('getLoginCredentials')
+            ->willReturn(null);
+        $pxCtx->expects($this->any())
+            ->method('getPxhdCookie')
+            ->willReturn(null);
+        $pxCtx->expects($this->any())
+            ->method('getOriginalToken')
+            ->willReturn(null);
         return $pxCtx;
     }
 

@@ -9,7 +9,7 @@ class PerimeterxUtilsDouble extends PerimeterxUtils {
     }
 }
 
-class PerimeterxUtilsTest extends PHPUnit_Framework_TestCase {
+class PerimeterxUtilsTest extends PHPUnit\Framework\TestCase {
     const TEMP_STREAM_NAME = "file://" . __DIR__ . "/tmp.txt";
 
     public function setUp() {

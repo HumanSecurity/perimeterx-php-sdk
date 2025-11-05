@@ -49,7 +49,7 @@ class PerimeterxLogger extends AbstractLogger
             throw new InvalidArgumentException($level . ' is not a defined level in the PSR-3 specification.');
         }
 
-        error_log($this->interpolate((string)$message, $context, $level));
+        error_log($this->interpolate((string)$message, $level, $context));
     }
 
     /**
@@ -61,11 +61,12 @@ class PerimeterxLogger extends AbstractLogger
      * > - Placeholder names MUST be delimited with a single opening brace { and a single closing brace }. There MUST NOT be any whitespace between the delimiters and the placeholder name.
      *
      * @param string $message
+     * @param string $level
      * @param array  $context
      *
      * @return string
      */
-    private function interpolate($message, array $context = [], $level)
+    private function interpolate($message, $level, array $context = [])
     {
         // build a replacement array with braces around the context keys
         $replace = [];

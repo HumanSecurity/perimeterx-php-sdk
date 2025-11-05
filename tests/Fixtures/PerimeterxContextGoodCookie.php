@@ -69,7 +69,3 @@ class PerimeterxContextGoodCookie extends PerimeterxContext
     public function setCookieHmac($val){}
     public function setPassReason($val){}
 }
-?>
-<script>
-
-</script>

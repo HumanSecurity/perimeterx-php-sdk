@@ -136,6 +136,11 @@ class PerimeterxContext
     protected $uri;
 
     /**
+     * @var bool whether the route is sensitive.
+     */
+    protected $sensitive_route;
+
+    /**
      * @var string user's user agent.
      */
     protected $userAgent;

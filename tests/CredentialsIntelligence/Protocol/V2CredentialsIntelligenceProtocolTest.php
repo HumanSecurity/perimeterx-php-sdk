@@ -4,7 +4,7 @@ use Perimeterx\CredentialsIntelligence\Protocol\V2CredentialsIntelligenceProtoco
 use Perimeterx\CredentialsIntelligence\LoginCredentialsFields;
 use Perimeterx\CredentialsIntelligence\Protocol\CIVersion;
 
-class V2CredentialsIntelligenceProtocolTests extends PHPUnit_Framework_TestCase {
+class V2CredentialsIntelligenceProtocolTests extends PHPUnit\Framework\TestCase {
 
     /**
      * @dataProvider provideCredentialsAndExpectedHashes
