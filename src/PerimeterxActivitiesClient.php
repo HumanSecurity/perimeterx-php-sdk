@@ -132,6 +132,21 @@ class PerimeterxActivitiesClient
             $details['graphql_operation_type'] = $graphqlFields->getOperationType();
             $details['graphql_operation_name'] = $graphqlFields->getOperationName();
         }
+
+        $crossTabSession = $pxCtx->getCrossTabSession();
+        if (isset($crossTabSession)) {
+            $details['cross_tab_session'] = $crossTabSession;
+        }
+
+        $appUserId = $pxCtx->getAppUserId();
+        if (isset($appUserId)) {
+            $details['app_user_id'] = $appUserId;
+        }
+
+        $jwtAdditionalFields = $pxCtx->getJwtAdditionalFields();
+        if (isset($jwtAdditionalFields) && !empty($jwtAdditionalFields)) {
+            $details['jwt_additional_fields'] = $jwtAdditionalFields;
+        }
     }
 
     public function generateActivity($activityType, $pxCtx, $details) {

@@ -56,6 +56,17 @@ class PerimeterxContext
         $this->sensitive_route = $this->checkSensitiveRoutePrefix($pxConfig['sensitive_routes'], $this->uri);
         $this->loginCredentials = array_key_exists('loginCredentials', $additionalFields) ? $additionalFields['loginCredentials'] : null;
         $this->graphqlFields = array_key_exists('graphqlFields', $additionalFields) ? $additionalFields['graphqlFields'] : null;
+        
+        if (array_key_exists('jwtData', $additionalFields) && isset($additionalFields['jwtData'])) {
+            $jwtData = $additionalFields['jwtData'];
+            if (isset($jwtData['app_user_id'])) {
+                $this->app_user_id = $jwtData['app_user_id'];
+            }
+            if (isset($jwtData['jwt_additional_fields'])) {
+                $this->jwt_additional_fields = $jwtData['jwt_additional_fields'];
+            }
+        }
+        
         $this->requestId = PerimeterxUtils::createUuidV4();
     }
 
@@ -275,6 +286,21 @@ class PerimeterxContext
      * @var GraphqlFields
      */
     protected $graphqlFields;
+
+    /**
+     * @var string
+     */
+    protected $cross_tab_session;
+
+    /**
+     * @var string
+     */
+    protected $app_user_id;
+
+    /**
+     * @var array
+     */
+    protected $jwt_additional_fields;
     
     /**
      * @return string
@@ -605,6 +631,9 @@ class PerimeterxContext
             if ($k == '_pxhd' || $k == '_pxvid') {
                 $this->px_cookies[$k] = $v;
             }
+            if ($k == 'pxcts') {
+                $this->cross_tab_session = $v;
+            }
             array_push($this->request_cookie_names, $k);
 
         } else {
@@ -853,5 +882,40 @@ class PerimeterxContext
      */
     public function areCredentialsCompromised() {
         return isset($this->pxde) && isset($this->pxde->breached_account) && $this->pxde->breached_account;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCrossTabSession() {
+        return $this->cross_tab_session;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAppUserId() {
+        return $this->app_user_id;
+    }
+
+    /**
+     * @param string $app_user_id
+     */
+    public function setAppUserId($app_user_id) {
+        $this->app_user_id = $app_user_id;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getJwtAdditionalFields() {
+        return $this->jwt_additional_fields;
+    }
+
+    /**
+     * @param array $jwt_additional_fields
+     */
+    public function setJwtAdditionalFields($jwt_additional_fields) {
+        $this->jwt_additional_fields = $jwt_additional_fields;
     }
 }

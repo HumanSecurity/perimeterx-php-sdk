@@ -26,6 +26,7 @@
         "risk_api",
         "sensitive_headers",
         "sensitive_routes",
-        "vid_extraction"
+        "vid_extraction",
+        "user_identifiers"
     ]
 }

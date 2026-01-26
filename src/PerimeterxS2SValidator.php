@@ -99,7 +99,7 @@ class PerimeterxS2SValidator extends PerimeterxRiskClient
           $requestBody['additional']['px_cookie_orig'] = $this->pxCtx->getPxCookie();
         }
 
-        if (in_array($this->pxCtx->getS2SCallReason(), ['cookie_expired', 'cookie_validation_failed'])) {
+        if (in_array($this->pxCtx->getS2SCallReason(), ['cookie_expired', 'cookie_validation_failed', 'sensitive_route'])) {
             if ($this->pxCtx->getDecodedCookie()) {
                 $requestBody['additional']['px_cookie'] = $this->pxCtx->getDecodedCookie();
             }
@@ -143,6 +143,21 @@ class PerimeterxS2SValidator extends PerimeterxRiskClient
         if (!is_null($graphqlFields)) {
             $requestBody['additional']['graphql_operation_type'] = $graphqlFields->getOperationType();
             $requestBody['additional']['graphql_operation_name'] = $graphqlFields->getOperationName();
+        }
+
+        $crossTabSession = $this->pxCtx->getCrossTabSession();
+        if (isset($crossTabSession)) {
+            $requestBody['additional']['cross_tab_session'] = $crossTabSession;
+        }
+
+        $appUserId = $this->pxCtx->getAppUserId();
+        if (isset($appUserId)) {
+            $requestBody['additional']['app_user_id'] = $appUserId;
+        }
+
+        $jwtAdditionalFields = $this->pxCtx->getJwtAdditionalFields();
+        if (isset($jwtAdditionalFields) && !empty($jwtAdditionalFields)) {
+            $requestBody['additional']['jwt_additional_fields'] = $jwtAdditionalFields;
         }
 
         return $requestBody;
