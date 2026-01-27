@@ -54,17 +54,9 @@ class PerimeterxContext
         }
         $this->http_method = $_SERVER['REQUEST_METHOD'];
         $this->sensitive_route = $this->checkSensitiveRoutePrefix($pxConfig['sensitive_routes'], $this->uri);
-        $this->loginCredentials = array_key_exists('loginCredentials', $additionalFields) ? $additionalFields['loginCredentials'] : null;
-        $this->graphqlFields = array_key_exists('graphqlFields', $additionalFields) ? $additionalFields['graphqlFields'] : null;
-        
-        if (array_key_exists('jwtData', $additionalFields) && isset($additionalFields['jwtData'])) {
-            $jwtData = $additionalFields['jwtData'];
-            if (isset($jwtData['app_user_id'])) {
-                $this->app_user_id = $jwtData['app_user_id'];
-            }
-            if (isset($jwtData['jwt_additional_fields'])) {
-                $this->jwt_additional_fields = $jwtData['jwt_additional_fields'];
-            }
+        if (is_array($additionalFields)) {
+            $this->loginCredentials = array_key_exists('loginCredentials', $additionalFields) ? $additionalFields['loginCredentials'] : null;
+            $this->graphqlFields = array_key_exists('graphqlFields', $additionalFields) ? $additionalFields['graphqlFields'] : null;
         }
         
         $this->requestId = PerimeterxUtils::createUuidV4();

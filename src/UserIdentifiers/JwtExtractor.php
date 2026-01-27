@@ -67,7 +67,7 @@ class JwtExtractor
         $headersLower = array_change_key_case($headers, CASE_LOWER);
         $headerNameLower = strtolower($headerName);
 
-        if (!isset($headersLower[$headerNameLower])) {
+        if (!isset($headersLower[$headerNameLower]) || empty($headersLower[$headerNameLower])) {
             return null;
         }
 
@@ -128,7 +128,7 @@ class JwtExtractor
     private function decodeJwtPayload($jwtToken)
     {
         $parts = explode('.', $jwtToken);
-        if (count($parts) < 2) {
+        if (count($parts) < 3) {
             return null;
         }
 

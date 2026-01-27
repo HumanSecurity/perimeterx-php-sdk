@@ -170,7 +170,7 @@ final class Perimeterx
 
             $pxCtx = new PerimeterxContext($this->pxConfig, $additionalFields);
             $this->pxConfig['logger']->debug('Request context created successfully');
-
+            $this->enrichContextWithJwtData($pxCtx);
             $validator = new PerimeterxCookieValidator($pxCtx, $this->pxConfig);
 
             $cookie_valid = $validator->verify();
@@ -483,22 +483,16 @@ final class Perimeterx
             }
         }
 
-        $jwtData = $this->extractJwtUserIdentifiers();
-        if (isset($jwtData)) {
-            $additionalFields['jwtData'] = $jwtData;
-        }
-
         return $additionalFields;
     }
 
-    private function extractJwtUserIdentifiers() {
+    private function enrichContextWithJwtData($pxCtx) {
         if (empty($this->pxConfig['px_jwt_cookie_name']) && empty($this->pxConfig['px_jwt_header_name'])) {
-            return null;
+            return;
         }
 
         try {
             $jwtExtractor = new JwtExtractor($this->pxConfig);
-            
             $cookies = [];
             if (isset($_SERVER['HTTP_COOKIE'])) {
                 foreach (explode('; ', $_SERVER['HTTP_COOKIE']) as $rawcookie) {
@@ -509,12 +503,19 @@ final class Perimeterx
                 }
             }
 
-            $headers = PerimeterxUtils::getAllHeaders();
-
-            return $jwtExtractor->extract($cookies, $headers);
+            $headers = $pxCtx->getHeaders();
+            $jwtData = $jwtExtractor->extract($cookies, $headers);
+            
+            if (isset($jwtData)) {
+                if (isset($jwtData['app_user_id'])) {
+                    $pxCtx->setAppUserId($jwtData['app_user_id']);
+                }
+                if (isset($jwtData['jwt_additional_fields'])) {
+                    $pxCtx->setJwtAdditionalFields($jwtData['jwt_additional_fields']);
+                }
+            }
         } catch (\Exception $e) {
             $this->pxConfig['logger']->debug('Unable to extract JWT user identifiers: ' . $e->getMessage());
-            return null;
         }
     }
 

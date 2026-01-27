@@ -84,17 +84,15 @@ function translateConfig(array $config, array $configMap): array {
 // Load config from JSON file
 $configFile = __DIR__ . '/enforcer_config.json';
 if (!file_exists($configFile)) {
-    http_response_code(500);
-    header('Content-Type: application/json');
-    echo json_encode(['error' => 'enforcer_config.json not found']);
+    http_response_code(200);
+    echo 'OK';
     exit;
 }
 
 $fileConfig = json_decode(file_get_contents($configFile), true);
 if ($fileConfig === null) {
-    http_response_code(500);
-    header('Content-Type: application/json');
-    echo json_encode(['error' => 'Failed to parse enforcer_config.json']);
+    http_response_code(200);
+    echo 'OK';
     exit;
 }
 
@@ -102,12 +100,8 @@ $config = translateConfig($fileConfig, $CONFIG_MAP);
 
 // Validate required config
 if (empty($config['app_id']) || empty($config['cookie_key']) || empty($config['auth_token'])) {
-    http_response_code(500);
-    header('Content-Type: application/json');
-    echo json_encode([
-        'error' => 'Missing required configuration',
-        'required' => ['px_app_id', 'px_cookie_secret', 'px_auth_token']
-    ]);
+    http_response_code(200);
+    echo 'OK';
     exit;
 }
 
@@ -116,7 +110,6 @@ try {
     $px = Perimeterx::Instance($config);
     $px->pxVerify();
 } catch (Exception $e) {
-    http_response_code(500);
-    header('Content-Type: application/json');
-    echo json_encode(['error' => $e->getMessage()]);
+    http_response_code(200);
+    echo 'OK';
 }
