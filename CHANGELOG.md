@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Decoded cookie (`px_cookie`) now included in risk API request for sensitive route calls
+- Decoded cookie (`px_cookie`) now included in block activities when a valid cookie exists
 
 ## [4.0.1] - 2025-11-16
 

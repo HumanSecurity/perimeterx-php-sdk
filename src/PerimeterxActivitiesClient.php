@@ -77,6 +77,14 @@ class PerimeterxActivitiesClient
         $details['block_action'] = $pxCtx->getResponseBlockAction();
         $details['simulated_block'] = $this->pxConfig['module_mode'] == Perimeterx::$MONITOR_MODE;
 
+        if ($pxCtx->getDecodedCookie()) {
+            $details['px_cookie'] = $pxCtx->getDecodedCookie();
+        }
+
+        if ($pxCtx->getCookieHmac()) {
+            $details['px_cookie_hmac'] = $pxCtx->getCookieHmac();
+        }
+
         $this->prepareActivitiesRequest("block", $pxCtx, $details);
     }
 
