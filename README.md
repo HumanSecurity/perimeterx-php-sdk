@@ -6,7 +6,7 @@
 
 # [PerimeterX](http://www.perimeterx.com) PHP SDK
 
-> Latest stable version: [v4.0.1](https://packagist.org/packages/perimeterx/php-sdk#4.0.1)
+> Latest stable version: [v4.1.0](https://packagist.org/packages/perimeterx/php-sdk#4.1.0)
 
 ## Table of Contents
 
@@ -36,6 +36,7 @@
 *   [Data-Enrichment](#data-enrichment)
 *   [Enrich Custom Params](#enrich-custom-params)
 *   [Login Credentials Extraction](#login-credentials-extraction)
+*   [JWT User Identifiers](#jwt-user-identifiers)
 *   [Additional S2S Activity](#additional-s2s-activity)
 *   [Logging](#logging)
 *   [Module Mode](#module-mode)
@@ -640,6 +641,45 @@ function extractCreds() {
     ];
 }
 ```
+
+### <a name="jwt-user-identifiers"></a> JWT User Identifiers
+
+This feature extracts user identity information from a JWT (JSON Web Token) present in a cookie or header, and sends it to PerimeterX as part of the risk evaluation and activity data.
+
+The extracted data includes:
+- **App User ID** - A single field representing the user's identity
+- **Additional Fields** - Optional extra fields from the JWT payload
+
+The enforcer also automatically extracts the Cross-Tab Session (CTS) value from the `pxcts` cookie if present.
+
+**Default:**
+
+All JWT configuration options are disabled by default (set to `null` or empty array).
+
+```php
+$perimeterxConfig = [
+    // Extract JWT from a cookie
+    'px_jwt_cookie_name' => 'auth_token',
+    'px_jwt_cookie_user_id_field_name' => 'sub',
+    'px_jwt_cookie_additional_field_names' => ['session.id', 'account.type'],
+
+    // Or extract JWT from a header (cookie takes precedence if both configured)
+    'px_jwt_header_name' => 'Authorization',
+    'px_jwt_header_user_id_field_name' => 'user.id',
+    'px_jwt_header_additional_field_names' => ['tenant.id']
+];
+```
+
+#### Configuration Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `px_jwt_cookie_name` | string | Name of the cookie containing the JWT |
+| `px_jwt_cookie_user_id_field_name` | string | Dot-notated path to the user ID field in the JWT payload |
+| `px_jwt_cookie_additional_field_names` | array | List of dot-notated paths for additional fields to extract |
+| `px_jwt_header_name` | string | Name of the header containing the JWT |
+| `px_jwt_header_user_id_field_name` | string | Dot-notated path to the user ID field in the JWT payload |
+| `px_jwt_header_additional_field_names` | array | List of dot-notated paths for additional fields to extract |
 
 ### <a name="additional-s2s-activity"></a> Additional S2S Activity
 
