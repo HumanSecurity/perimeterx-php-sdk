@@ -77,6 +77,14 @@ class PerimeterxActivitiesClient
         $details['block_action'] = $pxCtx->getResponseBlockAction();
         $details['simulated_block'] = $this->pxConfig['module_mode'] == Perimeterx::$MONITOR_MODE;
 
+        if ($pxCtx->getDecodedCookie()) {
+            $details['px_cookie'] = $pxCtx->getDecodedCookie();
+        }
+
+        if ($pxCtx->getCookieHmac()) {
+            $details['px_cookie_hmac'] = $pxCtx->getCookieHmac();
+        }
+
         $this->prepareActivitiesRequest("block", $pxCtx, $details);
     }
 
@@ -131,6 +139,21 @@ class PerimeterxActivitiesClient
         if (!is_null($graphqlFields)) {
             $details['graphql_operation_type'] = $graphqlFields->getOperationType();
             $details['graphql_operation_name'] = $graphqlFields->getOperationName();
+        }
+
+        $crossTabSession = $pxCtx->getCrossTabSession();
+        if (isset($crossTabSession)) {
+            $details['cross_tab_session'] = $crossTabSession;
+        }
+
+        $appUserId = $pxCtx->getAppUserId();
+        if (isset($appUserId)) {
+            $details['app_user_id'] = $appUserId;
+        }
+
+        $jwtAdditionalFields = $pxCtx->getJwtAdditionalFields();
+        if (isset($jwtAdditionalFields) && !empty($jwtAdditionalFields)) {
+            $details['jwt_additional_fields'] = $jwtAdditionalFields;
         }
     }
 

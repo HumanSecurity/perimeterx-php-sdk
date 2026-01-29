@@ -32,6 +32,7 @@ use Perimeterx\CredentialsIntelligence\Protocol\CredentialsIntelligenceProtocolF
 use Perimeterx\CredentialsIntelligence\LoginSuccess\LoginSuccessfulReportingMethod;
 use Perimeterx\CredentialsIntelligence\LoginSuccess\LoginSuccessfulParserFactory;
 use Perimeterx\Utils\GuzzleHttpClient;
+use Perimeterx\UserIdentifiers\JwtExtractor;
 
 final class Perimeterx
 {
@@ -128,7 +129,13 @@ final class Perimeterx
                 'px_login_successful_reporting_method' => LoginSuccessfulReportingMethod::STATUS,
                 'px_login_successful_status' => 200,
                 'px_login_successful_header_name' => 'x-px-login-successful',
-                'px_login_successful_header_value' => '1'
+                'px_login_successful_header_value' => '1',
+                'px_jwt_cookie_name' => null,
+                'px_jwt_cookie_user_id_field_name' => null,
+                'px_jwt_cookie_additional_field_names' => [],
+                'px_jwt_header_name' => null,
+                'px_jwt_header_user_id_field_name' => null,
+                'px_jwt_header_additional_field_names' => []
             ], $pxConfig);
 
             if (empty($this->pxConfig['logger'])) {
@@ -163,7 +170,7 @@ final class Perimeterx
 
             $pxCtx = new PerimeterxContext($this->pxConfig, $additionalFields);
             $this->pxConfig['logger']->debug('Request context created successfully');
-
+            $this->enrichContextWithJwtData($pxCtx);
             $validator = new PerimeterxCookieValidator($pxCtx, $this->pxConfig);
 
             $cookie_valid = $validator->verify();
@@ -477,6 +484,39 @@ final class Perimeterx
         }
 
         return $additionalFields;
+    }
+
+    private function enrichContextWithJwtData($pxCtx) {
+        if (empty($this->pxConfig['px_jwt_cookie_name']) && empty($this->pxConfig['px_jwt_header_name'])) {
+            return;
+        }
+
+        try {
+            $jwtExtractor = new JwtExtractor($this->pxConfig);
+            $cookies = [];
+            if (isset($_SERVER['HTTP_COOKIE'])) {
+                foreach (explode('; ', $_SERVER['HTTP_COOKIE']) as $rawcookie) {
+                    if (!empty($rawcookie) && strpos($rawcookie, '=') !== false) {
+                        list($k, $v) = explode('=', $rawcookie, 2);
+                        $cookies[$k] = $v;
+                    }
+                }
+            }
+
+            $headers = $pxCtx->getHeaders();
+            $jwtData = $jwtExtractor->extract($cookies, $headers);
+            
+            if (isset($jwtData)) {
+                if (isset($jwtData['app_user_id'])) {
+                    $pxCtx->setAppUserId($jwtData['app_user_id']);
+                }
+                if (isset($jwtData['jwt_additional_fields'])) {
+                    $pxCtx->setJwtAdditionalFields($jwtData['jwt_additional_fields']);
+                }
+            }
+        } catch (\Exception $e) {
+            $this->pxConfig['logger']->debug('Unable to extract JWT user identifiers: ' . $e->getMessage());
+        }
     }
 
     private function extractGraphqlFields() {

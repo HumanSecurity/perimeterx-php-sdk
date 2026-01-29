@@ -52,7 +52,7 @@ abstract class PerimeterxRiskClient
     }
 
     /**
-     * @return long current time in milliseconds
+     * @return float current time in milliseconds
      */
     protected function getTimeInMilliseconds(){
         return round(microtime(true) * 1000);

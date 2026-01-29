@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## [#.#.#] - YYYY-MM-DD
+
+### Added
+
+- Support for Cross-Tab Session (CTS) extraction from `pxcts` cookie
+- Support for JWT-based User Identifiers extraction from cookies or headers
+
+### Fixed
+
+- Decoded cookie (`px_cookie`) now included in risk API request for sensitive route calls
+- Decoded cookie (`px_cookie`) now included in block activities when a valid cookie exists
+
 ## [4.0.1] - 2025-11-16
 
 ### Changed
