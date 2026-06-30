@@ -53,7 +53,7 @@ class PerimeterxContext
             }
         }
         $this->http_method = $_SERVER['REQUEST_METHOD'];
-        $this->sensitive_route = $this->checkSensitiveRoutePrefix($pxConfig['sensitive_routes'], $this->uri);
+        $this->sensitive_route = PerimeterxRouteUtils::isPathInPatterns($pxConfig['sensitive_routes'], $this->uri);
         if (is_array($additionalFields)) {
             $this->loginCredentials = array_key_exists('loginCredentials', $additionalFields) ? $additionalFields['loginCredentials'] : null;
             $this->graphqlFields = array_key_exists('graphqlFields', $additionalFields) ? $additionalFields['graphqlFields'] : null;
@@ -581,16 +581,6 @@ class PerimeterxContext
      */
     public function getCookieNames() {
         return $this->request_cookie_names;
-    }
-
-    private function checkSensitiveRoutePrefix($sensitive_routes, $uri)
-    {
-        foreach ($sensitive_routes as $route) {
-            if (strncmp($uri, $route, strlen($route)) === 0) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private function selfURL()

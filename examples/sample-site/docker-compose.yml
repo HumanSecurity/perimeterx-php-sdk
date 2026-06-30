@@ -1,0 +1,11 @@
+services:
+  px-sample:
+    build:
+      context: ../../
+      dockerfile: examples/sample-site/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - PX_APP_ID=<YOUR_APP_ID>
+      - PX_COOKIE_KEY=<YOUR_COOKIE_KEY>
+      - PX_AUTH_TOKEN=<YOUR_AUTH_TOKEN>
