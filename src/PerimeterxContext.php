@@ -31,6 +31,16 @@ class PerimeterxContext
             }
         }
 
+        $pxvid = $this->getPxVidCookie();
+        if (isset($pxvid)) {
+            if (self::isValidVid($pxvid)) {
+                $this->vid = $pxvid;
+                $this->vid_source = 'vid_cookie';
+            } else {
+                $this->orig_cookie_vid = $pxvid;
+            }
+        }
+
         $this->hostname = $_SERVER['HTTP_HOST'];
         // User Agent isn't always sent by bots so handle it gracefully.
         $this->userAgent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
@@ -293,7 +303,17 @@ class PerimeterxContext
      * @var array
      */
     protected $jwt_additional_fields;
-    
+
+    /**
+     * @var string|null - raw _pxvid value when it fails UUID validation
+     */
+    protected $orig_cookie_vid;
+
+    /**
+     * @var string|null - source of the VID: 'vid_cookie', 'risk_cookie', or null
+     */
+    protected $vid_source;
+
     /**
      * @return string
      */
@@ -899,5 +919,41 @@ class PerimeterxContext
      */
     public function setJwtAdditionalFields($jwt_additional_fields) {
         $this->jwt_additional_fields = $jwt_additional_fields;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getOrigCookieVid() {
+        return $this->orig_cookie_vid;
+    }
+
+    /**
+     * @param string $orig_cookie_vid
+     */
+    public function setOrigCookieVid($orig_cookie_vid) {
+        $this->orig_cookie_vid = $orig_cookie_vid;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getVidSource() {
+        return $this->vid_source;
+    }
+
+    /**
+     * @param string $vid_source
+     */
+    public function setVidSource($vid_source) {
+        $this->vid_source = $vid_source;
+    }
+
+    /**
+     * @param string $vid
+     * @return bool
+     */
+    public static function isValidVid($vid) {
+        return preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/', $vid) === 1;
     }
 }
