@@ -57,6 +57,21 @@ class PerimeterxRouteUtilsTest extends TestCase
         $this->assertEquals('/login', PerimeterxRouteUtils::normalizePath('/fake/../logi%6E?session=123'));
     }
 
+    public function testNormalizePath_traversalAboveRoot()
+    {
+        $this->assertEquals('/login', PerimeterxRouteUtils::normalizePath('/../login'));
+    }
+
+    public function testNormalizePath_multipleTraversalsAboveRoot()
+    {
+        $this->assertEquals('/login', PerimeterxRouteUtils::normalizePath('/../../../login'));
+    }
+
+    public function testNormalizePath_traversalAboveRootOnly()
+    {
+        $this->assertEquals('/', PerimeterxRouteUtils::normalizePath('/../../..'));
+    }
+
     // --- convertStringToRegex tests ---
 
     public function testConvertStringToRegex_validRegexString()

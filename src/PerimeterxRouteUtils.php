@@ -27,7 +27,9 @@ class PerimeterxRouteUtils
         $resolved = [];
         foreach ($segments as $segment) {
             if ($segment === '..') {
-                array_pop($resolved);
+                if (count($resolved) > 1) {
+                    array_pop($resolved);
+                }
             } elseif ($segment !== '.') {
                 $resolved[] = $segment;
             }
