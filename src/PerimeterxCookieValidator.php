@@ -71,6 +71,7 @@ class PerimeterxCookieValidator
             $this->pxCtx->setScore($cookie->getScore());
             $this->pxCtx->setUuid($cookie->getUuid());
             $this->pxCtx->setVid($cookie->getVid());
+            $this->pxCtx->setVidSource('risk_cookie');
             $this->pxCtx->setBlockAction($cookie->getBlockAction());
             $this->pxCtx->setResponseBlockAction($cookie->getBlockAction());
             $this->pxCtx->setCookieHmac($cookie->getHmac());

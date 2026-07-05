@@ -172,6 +172,17 @@ class PerimeterxActivitiesClient
 
         $details['client_uuid'] = $pxCtx->getUuid();
         $details['request_id'] = $pxCtx->getRequestId();
+
+        $vidSource = $pxCtx->getVidSource();
+        if (isset($vidSource)) {
+            $details['enforcer_vid_source'] = $vidSource;
+        }
+
+        $origCookieVid = $pxCtx->getOrigCookieVid();
+        if (isset($origCookieVid)) {
+            $details['orig_cookie_vid'] = $origCookieVid;
+        }
+
         $this->addAdditionalFieldsToDetails($pxCtx, $details);
 
         if ($activityType !== 'additional_s2s') {
