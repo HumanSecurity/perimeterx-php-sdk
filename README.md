@@ -6,7 +6,7 @@
 
 # [PerimeterX](http://www.perimeterx.com) PHP SDK
 
-> Latest stable version: [v4.1.0](https://packagist.org/packages/perimeterx/php-sdk#4.1.0)
+> Latest stable version: [v4.1.1](https://packagist.org/packages/perimeterx/php-sdk#4.1.1)
 
 ## Table of Contents
 
@@ -354,17 +354,27 @@ $perimeterxConfig = [
 
 #### <a name="sensitive-routes"></a> Sensitive Routes
 
-List of routes prefix. The Perimeterx module will always match request uri by this prefix list and if match was found will create a server-to-server call for, even if the cookie score is low and valid.
+List of route patterns. The PerimeterX module will always match the request URI against this list and if a match is found, will create a server-to-server call even if the cookie score is low and valid.
+
+Patterns can be:
+- **Plain strings** — matched as a prefix (backward compatible). E.g. `'/login'` matches `/login`, `/login/page`, `/loginx`.
+- **Regex-format strings** — strings wrapped in `/` delimiters with optional flags. E.g. `'/^\/api\/.*\/payment$/i'` matches `/api/v2/payment` case-insensitively.
 
 **Default: None**
 
 ```php
 $perimeterxConfig = [
 	..
-    'sensitive_routes' => ['/login', '/user/profile']
+    'sensitive_routes' => [
+        '/login',                        // prefix match
+        '/^\/api\/.*\/payment$/i',       // regex: any /api/*/payment path, case-insensitive
+        '/.*\/checkout$/',               // regex: any path ending with /checkout
+    ]
     ..
 ]
 ```
+
+> **Important:** Do not use trailing slashes on plain-string prefixes (use `'/login'` not `'/login/'`), because a trailing slash causes the value to be interpreted as a regex pattern. If your route genuinely ends with `/`, use an explicit regex instead: `'/^\/login\//'`.
 
 #### <a name="api-timeout"></a>API Timeouts
 

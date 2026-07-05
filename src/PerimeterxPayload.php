@@ -25,6 +25,16 @@ abstract class PerimeterxPayload {
     protected $payloadSecret;
 
     /**
+     * @var string
+     */
+    protected $cookieHash;
+
+    /**
+     * @var string
+     */
+    protected $cookieSecret;
+
+    /**
      * Factory method for creating PX payload object according to the version found on the request
      */
     public static function pxPayloadFactory($pxCtx, $pxConfig) {

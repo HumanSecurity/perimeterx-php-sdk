@@ -71,18 +71,18 @@ class PerimeterxS2SValidator extends PerimeterxRiskClient
             ]
         ];
 
-        $pxvid = $this->pxCtx->getPxVidCookie();
         $vid = $this->pxCtx->getVid();
-        $vid_source = "none";
+        $vid_source = $this->pxCtx->getVidSource();
         if (isset($vid)) {
-            $vid_source = "risk_cookie";
             $requestBody['vid'] = $vid;
-        } else if (isset($pxvid) && preg_match('/[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/', $pxvid)) {
-            $vid_source = "vid_cookie";
-            $requestBody['vid'] = $pxvid;
         }
 
-        $requestBody["additional"]["enforcer_vid_source"] = $vid_source;
+        $requestBody["additional"]["enforcer_vid_source"] = isset($vid_source) ? $vid_source : "none";
+
+        $origCookieVid = $this->pxCtx->getOrigCookieVid();
+        if (isset($origCookieVid)) {
+            $requestBody["additional"]["orig_cookie_vid"] = $origCookieVid;
+        }
 
         $uuid = $this->pxCtx->getUuid();
         if (isset($uuid)) {

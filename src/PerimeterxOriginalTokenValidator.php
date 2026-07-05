@@ -49,6 +49,7 @@ class PerimeterxOriginalTokenValidator
             $this->pxCtx->setDecodedOriginalToken($payload->getDecodedPayload());
             $this->pxCtx->setOriginalTokenUuid($payload->getUuid());
             $this->pxCtx->setVid($payload->getVid());
+            $this->pxCtx->setVidSource('risk_cookie');
 
             if (!$payload->isSecure()) {
                 $payloadString = json_encode($payload->getDecodedPayload());

@@ -28,7 +28,7 @@ class PerimeterxLogger extends AbstractLogger
      *
      * @return void
      */
-    public function log($level, $message, array $context = [])
+    public function log($level, \Stringable|string $message, array $context = []): void
     {
         if (!$this->debug_mode) {
             return;
